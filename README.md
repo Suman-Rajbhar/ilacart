@@ -12,7 +12,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
 ```php
 "require": {
 	"laravel/framework": "5.0.*",
-	"lutforrahman/ilacart": "1.0.1"
+	"lutforrahman/ilacart": "1.0.2"
 }
 ```
 
