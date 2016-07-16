@@ -10,7 +10,7 @@
  * Time: 12:12 PM
  */
 
-namespace Lutforrahman\iLaCart\Facade;
+namespace Lutforrahman\iLaCart\Facades;
 
 
 use Illuminate\Support\Facades\Facade;
