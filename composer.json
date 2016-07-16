@@ -1,0 +1,20 @@
+{
+    "name": "lutforrahman/ilacart",
+    "description": "iLaCart The Laravel Shoppingcart",
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "5"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lutfor Rahman",
+            "email": "contact.lutforrahman@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
