@@ -1,7 +1,8 @@
 {
     "name": "lutforrahman/ilacart",
     "description": "iLaCart The Laravel Shoppingcart",
-	
+	"type" : "package",
+	"keywords" : ["iLaCart", "Shoppingcart", "Laravel Shoppingcart", "eCommerce"],
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "~5.0"
@@ -18,6 +19,12 @@
             "email": "contact.lutforrahman@gmail.com"
         }
     ],
+	
+	"autoload": {
+        "psr-4": {
+            "Lutforrahman\\iLaCart\\": "src/"
+        }
+    },
 	
     "minimum-stability": "dev"
 }
