@@ -5,7 +5,7 @@
 	"keywords" : ["iLaCart", "Shoppingcart", "Laravel Shoppingcart", "eCommerce"],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "5*|5.1.*|5.2.*",
+        "illuminate/support": "~5.0"
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
