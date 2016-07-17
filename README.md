@@ -75,6 +75,7 @@ Cart::insert(array(
 ));
 ```
 
+
 ### Update Cart
 
 **Cart::update()**
@@ -273,6 +274,8 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 | *iLaCartInvalidTaxException*   		| When a non-numeric tax is passed                                 |
 | *iLaCartUnknownModelException*	    | When an unknown model is associated to a cart row                                |
 
+
+
 ## Example
 
 Below is a little example of how to list the cart content in a table:
@@ -310,6 +313,7 @@ Below is a little example of how to list the cart content in a table:
         $total = Cart::total();
 		return view('home', ['items' => $items, 'quantity' => $quantity, 'total' => $total]);
     }
+```
 
 // View
 
@@ -342,4 +346,3 @@ Below is a little example of how to list the cart content in a table:
 
    	</tbody>
 </table>
-```
