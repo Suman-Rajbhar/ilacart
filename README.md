@@ -16,7 +16,6 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
 ### Laravel 5
 
 ```php
-
 composer require lutforrahman/ilacart
 
 ```
