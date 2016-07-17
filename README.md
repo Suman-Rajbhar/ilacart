@@ -45,6 +45,7 @@ Look at one of the following topics to learn more about iLaCart
 
 The shoppingcart gives you the following methods to use:
 
+
 **Cart::insert()**
 
 ```php
@@ -68,15 +69,66 @@ Cart::insert('101', 'Product name', 'product-name', 'uploads/product-thumbnail.j
 // Array form
 Cart::insert(array('id' => '101', 'name' => 'Product name', 'slug' => 'product-name', 'image' => 'uploads/product-thumbnail.jpg', 'quantity' => 1, 'price' => 9.99, 'discount' => 0.00, 'tax' => 0.00, 'options' => array('size' => 'large')));
 
+OR
+
+$product = Product::find($id);
+$item = [
+	'id' => $product->id,
+	'name' => $product->name,
+	'slug' => $product->slug,
+	'image' => $product->thumbnail,
+	'quantity' => $quantity > 0 ? $quantity : 1,
+	'price' => $product->price,
+	'discount' => $product->discount_amount,
+	'tax' => 0,
+	'options' => array('size' => 'XL', 'color' => 'Red')
+];
+Cart::insert($item);
+		
+		
 // Batch method
 Cart::insert(array(
   array('id' => '101', 'name' => 'Product name', 'slug' => 'product-name', 'image' => 'uploads/product-thumbnail.jpg', 'quantity' => 1, 'price' => 9.99, 'discount' => 0.00, 'tax' => 0.00,),
   array('id' => '102', 'name' => 'Product name 2', 'slug' => 'product-name-2', 'image' => 'uploads/product-thumbnail-2.jpg', 'quantity' => 1, 'price' => 9.99, 'discount' => 0.00, 'tax' => 0.00,  'options' => array('size' => 'large', 'color' => 'white'))
 ));
+
+
+OR
+
+$product = Product::find($id);
+$item = [
+	'id' => $product->id,
+	'name' => $product->name,
+	'slug' => $product->slug,
+	'image' => $product->thumbnail,
+	'quantity' => $quantity > 0 ? $quantity : 1,
+	'price' => $product->price,
+	'discount' => $product->discount_amount,
+	'tax' => 0,
+	'options' => array('size' => 'XL', 'color' => 'Red')
+];
+
+$product2 = Product::find($id2);
+$item2 = [
+	'id' => $product2->id,
+	'name' => $product2->name,
+	'slug' => $product2->slug,
+	'image' => $product2->thumbnail,
+	'quantity' => $product2 > 0 ? $quantity : 1,
+	'price' => $product2->price,
+	'discount' => $product2->discount_amount,
+	'tax' => 0,
+	'options' => array('size' => 'XL', 'color' => 'Red')
+];
+
+Cart::insert(array($item, $item2));
+		
+	
 ```
 
 
 ### Update Cart
+
 
 **Cart::update()**
 
@@ -95,9 +147,28 @@ Cart::update($rowId, 2);
 OR
 
 Cart::update($rowId, array('name' => 'Product name'));
+
+OR
+
+$product = Product::find($id);
+
+$item = [
+	'id' => $product->id,
+	'name' => $product->name,
+	'slug' => $product->slug,
+	'image' => $product->thumbnail,
+	'quantity' => $quantity > 0 ? $quantity : 1,
+	'price' => $product->price,
+	'discount' => $product->discount_amount,
+	'tax' => 0,
+	'options' => array('size' => 'XL', 'color' => 'Red')
+];
+Cart::update($rowId, $item);
+		
 ```
 
 ### Remove an Item from Cart
+
 
 **Cart::remove()**
 
@@ -114,7 +185,9 @@ Cart::update($rowId, array('name' => 'Product name'));
 Cart::remove($rowId);
 ```
 
+
 ### Get a single Item from Cart
+
 
 **Cart::get()**
 
@@ -131,7 +204,9 @@ $rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
 Cart::get($rowId);
 ```
 
+
 ### Get all Items from Cart
+
 
 **Cart::contents()**
 
@@ -145,7 +220,9 @@ Cart::get($rowId);
 Cart::contents();
 ```
 
-### Empty Cart [ remove all items from cart.]
+
+### Empty Cart [ remove all items from cart]
+
 
 **Cart::destroy()**
 
@@ -158,7 +235,10 @@ Cart::contents();
 
 Cart::destroy();
 ```
+
+
 ### Get total amount of added Items in Cart
+
 
 **Cart::total()**
 
@@ -172,7 +252,9 @@ Cart::destroy();
 Cart::total();
 ```
 
+
 ### [Subtotal] Get total amount of an added Item in Cart [single item with quantity > 1]
+
 
 **Cart::subtotal()**
 
@@ -186,7 +268,9 @@ Cart::total();
 Cart::subtotal();
 ```
 
+
 ### Get total discount amount of items added in Cart
+
 
 **Cart::discount()**
 
@@ -200,6 +284,7 @@ Cart::subtotal();
 Cart::discount();
 ```
 
+
 **Cart::setCustomDiscount(5.00)**
 
 ```php
@@ -211,6 +296,7 @@ Cart::discount();
 Cart::setCustomDiscount(5.00);
 ```
 
+
 **Cart::customDiscount()**
 
 ```php
@@ -220,8 +306,10 @@ Cart::setCustomDiscount(5.00);
  * @return float
  */
 
+ 
 Cart::customDiscount();
 ```
+
 
 ### Get total quantity of a single item added in Cart
 
@@ -252,6 +340,7 @@ Cart::customDiscount();
  Cart::search(array('id' => 1, 'options' => array('size' => 'L'))); // Returns an array of rowid(s) of found item(s) or false on failure
 ```
 
+
 ### Show Cart contents
 
 ```php
@@ -260,6 +349,7 @@ foreach(Cart::contents() as $row)
 	echo 'You have ' . $row->quantity . ' items of ' . $row->product->name . ' with description: "' . $row->product->description . '" in your cart.';
 }
 ```
+
 
 ### Exceptions
 The Cart package will throw exceptions if something goes wrong. This way it's easier to debug your code using the Cart package or to handle the error based on the type of exceptions. The Cart packages can throw the following exceptions:
