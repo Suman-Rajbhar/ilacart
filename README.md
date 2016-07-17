@@ -81,16 +81,18 @@ The shoppingcart gives you the following methods to use:
 
 // Basic form
 
-Cart::insert('101', 'Product name', 'product-name', 'uploads/product-thumbnail.jpg', 1, 9.99, 0.00, 0.00, array('size' => 'large', 'color' => 'white'));
+Cart::insert('101', '090-BRC', 'Product name', 'product-name', 'uploads/product-thumbnail.jpg', 1, 9.99, 0.00, 0.00, array('size' => 'large', 'color' => 'white'));
 
 // Array form
 
 $product = Product::find($id);
 $item = [
 	'id' => $product->id,
+	'sku' => $product->sku,
 	'name' => $product->name,
 	'slug' => $product->slug,
 	'image' => $product->thumbnail,
+	'description' => $product->description,
 	'quantity' => $quantity > 0 ? $quantity : 1,
 	'price' => $product->price,
 	'discount' => $product->discount_amount,
@@ -105,9 +107,11 @@ Cart::insert($item);
 $product = Product::find($id);
 $item = [
 	'id' => $product->id,
+	'sku' => $product->sku,
 	'name' => $product->name,
 	'slug' => $product->slug,
 	'image' => $product->thumbnail,
+	'description' => $product->description,
 	'quantity' => $quantity > 0 ? $quantity : 1,
 	'price' => $product->price,
 	'discount' => $product->discount_amount,
@@ -118,9 +122,11 @@ $item = [
 $product2 = Product::find($id2);
 $item2 = [
 	'id' => $product2->id,
+	'sku' => $product2->sku,
 	'name' => $product2->name,
 	'slug' => $product2->slug,
 	'image' => $product2->thumbnail,
+	'description' => $product2->description,
 	'quantity' => $product2 > 0 ? $quantity : 1,
 	'price' => $product2->price,
 	'discount' => $product2->discount_amount,
@@ -163,9 +169,11 @@ $product = Product::find($id);
 
 $item = [
 	'id' => $product->id,
+	'sku' => $product->sku,
 	'name' => $product->name,
 	'slug' => $product->slug,
 	'image' => $product->thumbnail,
+	'description' => $product->description,
 	'quantity' => $quantity > 0 ? $quantity : 1,
 	'price' => $product->price,
 	'discount' => $product->discount_amount,
@@ -183,11 +191,12 @@ Cart::update($rowId, $item);
 	public function updateCart($rowId){
 		
 		$item = [
-			'id' => 102,
-			'name' => "Product name 2",
-			'slug' => "product-name-2",
+			'id' => 101,
+			'sku' => "090-BRC",
+			'name' => "Product name 1",
+			'slug' => "product-name-1",
 			'image' => "thumbnail",
-			'quantity' => 1,
+			'quantity' => 3,
 			'price' => 100,
 			'discount' => 9,
 			'tax' => 0,
@@ -427,7 +436,6 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 
 ```php
 
-
 	/**
      * Display the specified resource.
      *
@@ -442,9 +450,11 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
         $product = Product::find($id);
         $item = [
             'id' => $product->id,
+            'sku' => $product->sku,
             'name' => $product->name,
             'slug' => $product->slug,
             'image' => $product->thumbnail,
+            'description' => $product->description,
             'quantity' => $quantity > 0 ? $quantity : 1,
             'price' => $product->price,
             'discount' => $product->discount_amount,
