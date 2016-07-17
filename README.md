@@ -173,27 +173,7 @@ $item = [
 	'options' => array('size' => 'XL', 'color' => 'Red')
 ];
 Cart::update($rowId, $item);
-
-
-public function updateCart($rowId){
-		
-		$item = [
-			'id' => 103,
-			'name' => "Product name 3",
-			'slug' => "product-name-3",
-			'image' => "thumbnail",
-			'quantity' => 1,
-			'price' => 100,
-			'discount' => 9,
-			'tax' => 0,
-			'options' => array('size' => 'XL', 'color' => 'Red')
-		];
-		Cart::update($rowId, $item);
-		
-		return Cart::contents();
-		
-	}
-		
+	
 ```
 
 // In Controller
