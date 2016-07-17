@@ -279,10 +279,9 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 
 ## Example
 
-Below is a little example of how to list the cart content in a table:
+// Controller
 
 ```php
-// Controller
 
 
 	/**
