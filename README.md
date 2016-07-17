@@ -191,15 +191,9 @@ Cart::update($rowId, $item);
 	public function updateCart($rowId){
 		
 		$item = [
-			'id' => 101,
-			'sku' => "090-BRC",
-			'name' => "Product name 1",
-			'slug' => "product-name-1",
-			'image' => "thumbnail",
 			'quantity' => 3,
-			'price' => 100,
 			'discount' => 9,
-			'tax' => 0,
+			'tax' => 9.5,
 			'options' => array('size' => 'XL', 'color' => 'Red')
 		];
 		Cart::update($rowId, $item);
