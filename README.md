@@ -317,7 +317,7 @@ Below is a little example of how to list the cart content in a table:
 ```
 
 // View
-
+```php
 <table>
    	<thead>
        	<tr>
@@ -347,3 +347,4 @@ Below is a little example of how to list the cart content in a table:
 
    	</tbody>
 </table>
+```
