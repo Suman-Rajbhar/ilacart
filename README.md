@@ -63,7 +63,7 @@ The shoppingcart gives you the following methods to use:
 	/**
      * Add a row to the cart
      * @param string|array $id Unique ID of the item|Item formated as array|Array of items
-     * @param string $id Unique SKU of the item
+     * @param string $sku Unique SKU of the item
      * @param string $name Name of the item
      * @param string $slug Slug of the item
      * @param string $image Image of the item
