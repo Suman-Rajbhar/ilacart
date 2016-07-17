@@ -36,18 +36,12 @@ And finally add a new line to the `aliases` array:
 
 Now you're ready to start using the shoppingcart in your application.
 
-## Overview
+## Documentation
+
 Look at one of the following topics to learn more about iLaCart
 
-* [Usage](#usage)
-* [Collections](#collections)
-* [Instances](#instances)
-* [Models](#models)
-* [Exceptions](#exceptions)
-* [Events](#events)
-* [Example](#example)
 
-## Usage
+### Add to Cart
 
 The shoppingcart gives you the following methods to use:
 
@@ -81,6 +75,8 @@ Cart::insert(array(
 ));
 ```
 
+### Update Cart
+
 **Cart::update()**
 
 ```php
@@ -100,6 +96,8 @@ OR
 Cart::update($rowId, array('name' => 'Product name'));
 ```
 
+### Remove an Item from Cart
+
 **Cart::remove()**
 
 ```php
@@ -114,6 +112,8 @@ Cart::update($rowId, array('name' => 'Product name'));
 
 Cart::remove($rowId);
 ```
+
+### Get a single Item from Cart
 
 **Cart::get()**
 
@@ -130,6 +130,8 @@ $rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
 Cart::get($rowId);
 ```
 
+### Get all Items from Cart
+
 **Cart::contents()**
 
 ```php
@@ -142,6 +144,8 @@ Cart::get($rowId);
 Cart::contents();
 ```
 
+### Empty Cart [ remove all items from cart.]
+
 **Cart::destroy()**
 
 ```php
@@ -153,6 +157,7 @@ Cart::contents();
 
 Cart::destroy();
 ```
+### Get total amount of added Items in Cart
 
 **Cart::total()**
 
@@ -166,6 +171,8 @@ Cart::destroy();
 Cart::total();
 ```
 
+### [Subtotal] Get total amount of an added Item in Cart [single item with quantity > 1]
+
 **Cart::subtotal()**
 
 ```php
@@ -177,6 +184,8 @@ Cart::total();
 
 Cart::subtotal();
 ```
+
+### Get total discount amount of items added in Cart
 
 **Cart::discount()**
 
@@ -213,6 +222,8 @@ Cart::setCustomDiscount(5.00);
 Cart::customDiscount();
 ```
 
+### Get total quantity of a single item added in Cart
+
 **Cart::cartQuantity()**
 
 ```php
@@ -240,59 +251,7 @@ Cart::customDiscount();
  Cart::search(array('id' => 1, 'options' => array('size' => 'L'))); // Returns an array of rowid(s) of found item(s) or false on failure
 ```
 
-## Collections
-
-As you might have seen, the `Cart::contents()` and `Cart::get()` methods both return a Collection, a `CartCollection` and a `CartRowCollection`.
-
-These Collections extends the 'native' Laravel 4 Collection class, so all methods you know from this class can also be used on your shopping cart. With some addition to easily work with your carts content.
-
-## Instances
-
-Now the packages also supports multiple instances of the cart. The way this works is like this:
-
-You can set the current instance of the cart with `Cart::instance('newInstance')`, at that moment, the active instance of the cart is `newInstance`, so when you add, remove or get the content of the cart, you work with the `newInstance` instance of the cart.
-If you want to switch instances, you just call `Cart::instance('otherInstance')` again, and you're working with the `otherInstance` again.
-
-So a little example:
-
-```php
-Cart::instance('shopping')->insert('101', 'Product name', 1, 9.99);
-
-// Get the content of the 'shopping' cart
-Cart::contents();
-
-Cart::instance('wishlist')->insert('102', 'Product name 2', 1, 19.95, array('size' => 'medium'));
-
-// Get the content of the 'wishlist' cart
-Cart::contents();
-
-// If you want to get the content of the 'shopping' cart again...
-Cart::instance('shopping')->contents();
-
-// And the count of the 'wishlist' cart again
-Cart::instance('wishlist')->cartQuantity();
-```
-
-N.B. Keep in mind that the cart stays in the last set instance for as long as you don't set a different one during script execution.
-
-N.B.2 The default cart instance is called `main`, so when you're not using instances,`Cart::content();` is the same as `Cart::instance('main')->content()`.
-
-## Models
-A new feature is associating a model with the items in the cart. Let's say you have a `Product` model in your application. With the new `associate()` method, you can tell the cart that an item in the cart, is associated to the `Product` model. 
-
-That way you can access your model right from the `CartRowCollection`!
-
-Here is an example:
-
-```php
-<?php 
-
-/**
- * Let say we have a Product model that has a name and description.
- */
-
-Cart::associate('Product')->insert('101', 'Product name', 1, 9.99, array('size' => 'large'));
-
+### Show Cart contents
 
 foreach(Cart::contents() as $row)
 {
@@ -300,10 +259,7 @@ foreach(Cart::contents() as $row)
 }
 ```
 
-The key to access the model is the same as the model name you associated (lowercase).
-The `associate()` method has a second optional parameter for specifying the model namespace.
-
-## Exceptions
+### Exceptions
 The Cart package will throw exceptions if something goes wrong. This way it's easier to debug your code using the Cart package or to handle the error based on the type of exceptions. The Cart packages can throw the following exceptions:
 
 | Exception                             | Reason                                                                           |
@@ -317,18 +273,6 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 | *iLaCartInvalidTaxException*   		| When a non-numeric tax is passed                                 |
 | *iLaCartUnknownModelException*	    | When an unknown model is associated to a cart row                                |
 
-## Events
-
-The cart also has events build in. There are five events available for you to listen for.
-
-| Event                | Fired                                   |
-| -------------------- | --------------------------------------- |
-| cart.add($item)      | When a single item is added             |
-| cart.batch($items)   | When a batch of items is added          |
-| cart.update($rowId)  | When an item in the cart is updated     |
-| cart.remove($rowId)  | When an item is removed from the cart   |
-| cart.destroy()       | When the cart is destroyed              |
-
 ## Example
 
 Below is a little example of how to list the cart content in a table:
@@ -336,8 +280,36 @@ Below is a little example of how to list the cart content in a table:
 ```php
 // Controller
 
-Cart::insert('101', 'Product name', 1, 9.99);
-Cart::insert('102', 'Product name 2', 2, 5.95, array('size' => 'large'));
+
+	/**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @param int $quantity
+     * @param string $size
+     * @param string $color
+     * @return \Illuminate\Http\Response
+     */
+    public function storeCart($id, $quantity, $size, $color)
+    {
+        $product = Product::find($id);
+        $item = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'image' => $product->thumbnail,
+            'quantity' => $quantity > 0 ? $quantity : 1,
+            'price' => $product->price,
+            'discount' => $product->discount_amount,
+            'tax' => 0,
+			'options' => ['size' => $size, 'color' => $color]
+        ];
+        Cart::insert($item);
+        $items = Cart::contents();
+        $quantity = Cart::cartQuantity();
+        $total = Cart::total();
+		return view('home', ['items' => $items, 'quantity' => $quantity, 'total' => $total]);
+    }
 
 // View
 
@@ -359,6 +331,7 @@ Cart::insert('102', 'Product name 2', 2, 5.95, array('size' => 'large'));
            	<td>
                	<p><strong>{{ $item->name }} </strong></p>
                	<p>{{ $item->options->has('size') ? $item->options->size : '' }} </p>
+               	<p>{{ $item->options->has('color') ? $item->options->color : '' }} </p>
            	</td>
            	<td><input type="text" value="{{ $item->quantity }}"></td>
            	<td>${{ $item->price }} </td>
