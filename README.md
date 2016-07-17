@@ -254,6 +254,7 @@ Cart::customDiscount();
 
 ### Show Cart contents
 
+```php
 foreach(Cart::contents() as $row)
 {
 	echo 'You have ' . $row->quantity . ' items of ' . $row->product->name . ' with description: "' . $row->product->description . '" in your cart.';
