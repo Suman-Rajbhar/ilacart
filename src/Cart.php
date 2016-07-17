@@ -104,16 +104,18 @@ class Cart
     /**
      * Add a row to the cart
      * @param string|array $id Unique ID of the item|Item formated as array|Array of items
+     * @param string $id Unique SKU of the item
      * @param string $name Name of the item
      * @param string $slug Slug of the item
      * @param string $image Image of the item
+     * @param string $description Description of the item
      * @param int $quantity Item quantity to add to the cart
      * @param float $price Price of one item
      * @param float $discount Discount amount of one item
      * @param float $tax Tax amount of one item
      * @param array $options Array of additional options, such as 'size' or 'color'
      */
-    public function insert($id, $name = null, $slug = null, $image = null, $quantity = null, $price = null, $discount = null, $tax = null, array $options = [])
+    public function insert($id, $sku, $name = null, $slug = null, $image = null, $description = null, $quantity = null, $price = null, $discount = null, $tax = null, array $options = [])
     {
         // If the first parameter is an array we need to call the insert() function again
         if (is_array($id)) {
@@ -125,7 +127,7 @@ class Cart
 
                 foreach ($id as $item) {
                     $options = array_get($item, 'options', []);
-                    $this->insertRow($item['id'], $item['name'], $item['slug'], $item['image'], $item['quantity'], $item['price'], $this->discountResolve($item), $item['tax'], $options);
+                    $this->insertRow($item['id'], $item['sku'], $item['name'], $item['slug'], $item['image'], $item['description'], $item['quantity'], $item['price'], $this->discountResolve($item), $item['tax'], $options);
                 }
 
                 // Fire the cart.batched event
@@ -139,7 +141,7 @@ class Cart
             // Fire the cart.insert event
             $this->event->fire('cart.insert', array_merge($id, ['options' => $options]));
 
-            $result = $this->insertRow($id['id'], $id['name'], $id['slug'], $id['image'], $id['quantity'], $id['price'], $this->discountResolve($id), $id['tax'], $options);
+            $result = $this->insertRow($id['id'], $id['sku'], $id['name'], $id['slug'], $id['image'], $id['description'], $id['quantity'], $id['price'], $this->discountResolve($id), $id['tax'], $options);
 
             // Fire the cart.inserted event
             $this->event->fire('cart.inserted', array_merge($id, ['options' => $options]));
@@ -148,12 +150,12 @@ class Cart
         }
 
         // Fire the cart.insert event
-        $this->event->fire('cart.insert', compact('id', 'name', 'slug', 'image', 'quantity', 'price', 'tax', 'options'));
+        $this->event->fire('cart.insert', compact('id', 'sku', 'name', 'slug', 'image', 'description', 'quantity', 'price', 'tax', 'options'));
 
-        $result = $this->insertRow($id, $name, $slug, $image, $quantity, $price, $discount, $tax, $options);
+        $result = $this->insertRow($id, $name, $slug, $image, $description, $quantity, $price, $discount, $tax, $options);
 
         // Fire the cart.inserted event
-        $this->event->fire('cart.inserted', compact('id', 'name', 'slug', 'image', 'quantity', 'price', 'tax', 'options'));
+        $this->event->fire('cart.inserted', compact('id', 'sku', 'name', 'slug', 'image', 'description', 'quantity', 'price', 'tax', 'options'));
 
         return $result;
     }
@@ -319,16 +321,18 @@ class Cart
      * insert row to the cart
      *
      * @param string $id Unique ID of the item
+     * @param string $sku Unique SKU of the item
      * @param string $name Name of the item
      * @param string $slug Slug of the item
      * @param string $image Image of the item
+     * @param string $description Description of the item
      * @param int $quantity Item quantity to insert to the cart
      * @param float $price Price of one item
      * @param float $discount Discount amount of one item
      * @param float $tax Tax amount of one item
      * @param array $options Array of additional options, such as 'size' or 'color'
      */
-    protected function insertRow($id, $name, $slug, $image, $quantity, $price, $discount, $tax, array $options = [])
+    protected function insertRow($id, $sku, $name, $slug, $image, $description, $quantity, $price, $discount, $tax, array $options = [])
     {
         if (empty($id) || empty($name) || empty($quantity) || !isset($price)) {
             throw new Exceptions\iLaCartInvalidItemException;
@@ -357,7 +361,7 @@ class Cart
             $row = $cart->get($rowId);
             $cart = $this->updateRow($rowId, ['quantity' => $row->quantity + $quantity]);
         } else {
-            $cart = $this->createRow($rowId, $id, $name, $slug, $image, $quantity, $price, $discount, $tax, $options);
+            $cart = $this->createRow($rowId, $id, $ - ($quantity * $discount), $name, $slug, $image, $description, $quantity, $price, $discount, $tax, $options);
         }
 
         $this->updateCart($cart);
@@ -469,9 +473,11 @@ class Cart
      *
      * @param  string $rowId The ID of the new row
      * @param  string $id Unique ID of the item
+     * @param  string $sku Unique SKU of the item
      * @param  string $name Name of the item
      * @param  string $slug Slug of the item
      * @param  string $image Image of the item
+     * @param  string $description Description of the item
      * @param  int $quantity Item quantity to insert to the cart
      * @param  float $price Price of one item
      * @param  float $discount Discount of one item
@@ -479,22 +485,24 @@ class Cart
      * @param  array $options Array of additional options, such as 'size' or 'color'
      * @return Lutforrahman\iLaCart\CartCollection
      */
-    protected function createRow($rowId, $id, $name, $slug, $image, $quantity, $price, $discount, $tax, $options)
+    protected function createRow($rowId, $id, $sku, $name, $slug, $image, $description, $quantity, $price, $discount, $tax, $options)
     {
         $cart = $this->getContent();
 
         $newRow = new CartRowCollection([
             'rowid' => $rowId,
             'id' => $id,
+            'sku' => $sku,
             'name' => $name,
             'slug' => $slug,
             'image' => $image,
+            'description' => $description,
             'quantity' => $quantity,
             'price' => $price,
             'discount' => $discount,
             'tax' => $tax,
             'options' => new CartRowOptionsCollection($options),
-            'total' => $quantity * $price,
+            'total' => $quantity * $price  - ($quantity * $discount),
             'total_discount' => $quantity * $discount,
             'subtotal' => ($quantity * $price) - ($quantity * $discount),
         ], $this->associatedModel, $this->associatedModelNamespace);

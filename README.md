@@ -15,30 +15,34 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
 
 ### Laravel 5
 
+composer require lutforrahman/ilacart
+
+OR
+
+
 ```php
+
 "require": {
 	"laravel/framework": "5.0.*",
-	"lutforrahman/ilacart": "1.0.3"
+	"lutforrahman/ilacart": "1.0.4"
 }
+
 ```
 
 Next, run the Composer update command from the Terminal:
 
     composer update
 	
-	OR
 	
-	composer require lutforrahman/ilacart
-
 Now all you have to do is add the service provider of the package and alias the package. To do this open your `app/config/app.php` file.
 
 Add a new line to the `service providers` array:
 
 	Lutforrahman\iLaCart\ShoppingcartServiceProvider::class
 
-And finally add a new line to the `aliases` array:
+After that add a new line to the `aliases` array:
 
-	'Cart'            => Lutforrahman\iLaCart\Facades\Cart::class,
+	'Cart' => Lutforrahman\iLaCart\Facades\Cart::class,
 
 Now you're ready to start using the shoppingcart in your application.
 
@@ -55,6 +59,7 @@ The shoppingcart gives you the following methods to use:
 **Cart::insert()**
 
 ```php
+
 	/**
      * Add a row to the cart
      * @param string|array $id Unique ID of the item|Item formated as array|Array of items
@@ -70,12 +75,10 @@ The shoppingcart gives you the following methods to use:
  
 
 // Basic form
+
 Cart::insert('101', 'Product name', 'product-name', 'uploads/product-thumbnail.jpg', 1, 9.99, 0.00, 0.00, array('size' => 'large', 'color' => 'white'));
 
 // Array form
-Cart::insert(array('id' => '101', 'name' => 'Product name', 'slug' => 'product-name', 'image' => 'uploads/product-thumbnail.jpg', 'quantity' => 1, 'price' => 9.99, 'discount' => 0.00, 'tax' => 0.00, 'options' => array('size' => 'large')));
-
-OR
 
 $product = Product::find($id);
 $item = [
@@ -93,13 +96,6 @@ Cart::insert($item);
 		
 		
 // Batch method
-Cart::insert(array(
-  array('id' => '101', 'name' => 'Product name', 'slug' => 'product-name', 'image' => 'uploads/product-thumbnail.jpg', 'quantity' => 1, 'price' => 9.99, 'discount' => 0.00, 'tax' => 0.00,),
-  array('id' => '102', 'name' => 'Product name 2', 'slug' => 'product-name-2', 'image' => 'uploads/product-thumbnail-2.jpg', 'quantity' => 1, 'price' => 9.99, 'discount' => 0.00, 'tax' => 0.00,  'options' => array('size' => 'large', 'color' => 'white'))
-));
-
-
-OR
 
 $product = Product::find($id);
 $item = [
@@ -139,6 +135,7 @@ Cart::insert(array($item, $item2));
 **Cart::update()**
 
 ```php
+
 /**
  * Update the quantity of one row of the cart
  *
@@ -146,9 +143,10 @@ Cart::insert(array($item, $item2));
  * @param  integer|Array $attribute   New quantity of the item|Array of attributes to update
  * @return boolean
  */
- $rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
+ 
+ $rowId = 'feeb69e1a11765b136a0de76c2baaa40';
 
-Cart::update($rowId, 2);
+Cart::update($rowId, 4);
 
 OR
 
@@ -170,7 +168,52 @@ $item = [
 	'options' => array('size' => 'XL', 'color' => 'Red')
 ];
 Cart::update($rowId, $item);
+
+
+public function updateCart($rowId){
 		
+		$item = [
+			'id' => 103,
+			'name' => "Product name 3",
+			'slug' => "product-name-3",
+			'image' => "thumbnail",
+			'quantity' => 1,
+			'price' => 100,
+			'discount' => 9,
+			'tax' => 0,
+			'options' => array('size' => 'XL', 'color' => 'Red')
+		];
+		Cart::update($rowId, $item);
+		
+		return Cart::contents();
+		
+	}
+		
+```
+
+// In Controller
+
+```php
+
+	public function updateCart($rowId){
+		
+		$item = [
+			'id' => 102,
+			'name' => "Product name 2",
+			'slug' => "product-name-2",
+			'image' => "thumbnail",
+			'quantity' => 1,
+			'price' => 100,
+			'discount' => 9,
+			'tax' => 0,
+			'options' => array('size' => 'XL', 'color' => 'Red')
+		];
+		Cart::update($rowId, $item);
+		
+		return Cart::contents();
+		
+	}
+
 ```
 
 ### Remove an Item from Cart
@@ -179,6 +222,7 @@ Cart::update($rowId, $item);
 **Cart::remove()**
 
 ```php
+
 /**
  * Remove a row from the cart
  *
@@ -186,9 +230,22 @@ Cart::update($rowId, $item);
  * @return boolean
  */
 
- $rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
+ $rowId = 'feeb69e1a11765b136a0de76c2baaa40';
 
 Cart::remove($rowId);
+
+```
+
+
+// In Controller
+
+```php
+
+	public function removeCart($rowId){
+		Cart::remove($rowId);
+		return Cart::contents();
+	}
+
 ```
 
 
@@ -198,6 +255,7 @@ Cart::remove($rowId);
 **Cart::get()**
 
 ```php
+
 /**
  * Get a row of the cart by its ID
  *
@@ -205,9 +263,10 @@ Cart::remove($rowId);
  * @return CartRowCollection
  */
 
-$rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
+$rowId = 'feeb69e1a11765b136a0de76c2baaa40';
 
 Cart::get($rowId);
+
 ```
 
 
@@ -217,6 +276,7 @@ Cart::get($rowId);
 **Cart::contents()**
 
 ```php
+
 /**
  * Get the cart content
  *
@@ -224,6 +284,7 @@ Cart::get($rowId);
  */
 
 Cart::contents();
+
 ```
 
 
@@ -233,6 +294,7 @@ Cart::contents();
 **Cart::destroy()**
 
 ```php
+
 /**
  * Empty the cart
  *
@@ -240,6 +302,7 @@ Cart::contents();
  */
 
 Cart::destroy();
+
 ```
 
 
@@ -249,6 +312,7 @@ Cart::destroy();
 **Cart::total()**
 
 ```php
+
 /**
  * Total amount of cart
  *
@@ -256,6 +320,7 @@ Cart::destroy();
  */
 
 Cart::total();
+
 ```
 
 
@@ -265,6 +330,7 @@ Cart::total();
 **Cart::subtotal()**
 
 ```php
+
 /**
  * Sub total amount of cart
  *
@@ -272,6 +338,7 @@ Cart::total();
  */
 
 Cart::subtotal();
+
 ```
 
 
@@ -281,6 +348,7 @@ Cart::subtotal();
 **Cart::discount()**
 
 ```php
+
 /**
  * Discount of cart
  *
@@ -288,24 +356,28 @@ Cart::subtotal();
  */
 
 Cart::discount();
+
 ```
 
 
 **Cart::setCustomDiscount(5.00)**
 
 ```php
+
 /**
  * @param $amount
  * @return bool
  */
 
 Cart::setCustomDiscount(5.00);
+
 ```
 
 
 **Cart::customDiscount()**
 
 ```php
+
 /**
  * Custom discount of cart
  *
@@ -314,6 +386,7 @@ Cart::setCustomDiscount(5.00);
 
  
 Cart::customDiscount();
+
 ```
 
 
@@ -322,6 +395,7 @@ Cart::customDiscount();
 **Cart::cartQuantity()**
 
 ```php
+
 /**
  * Get the number of items in the cart
  *
@@ -331,29 +405,18 @@ Cart::customDiscount();
 
  Cart::cartQuantity();      // Total items
  Cart::cartQuantity(false); // Total rows
+ 
 ```
-
-**Cart::search()**
-
-```php
-/**
- * Search if the cart has a item
- *
- * @param  Array  $search An array with the item ID and optional options
- * @return Array|boolean
- */
-
- Cart::search(array('id' => 1, 'options' => array('size' => 'L'))); // Returns an array of rowid(s) of found item(s) or false on failure
-```
-
 
 ### Show Cart contents
 
 ```php
-foreach(Cart::contents() as $row)
+
+foreach(Cart::contents() as $item)
 {
-	echo 'You have ' . $row->quantity . ' items of ' . $row->product->name . ' with description: "' . $row->product->description . '" in your cart.';
+	echo "<img src=".$item->image." width='40'/> " . ' Name : ' . $item->name . ' Price : ' . $item->price . ' Size : ' . $item->options->size;
 }
+
 ```
 
 
@@ -412,20 +475,23 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 ```
 
 // View
+
 ```php
+
 <table>
    	<thead>
        	<tr>
            	<th>Product</th>
            	<th>Quantity</th>
            	<th>Item Price</th>
+           	<th>Discount</th>
            	<th>Subtotal</th>
        	</tr>
    	</thead>
 
    	<tbody>
 
-   	@foreach(Cart::contents() as $item) :?>
+   	@foreach(Cart::contents() as $item)
 
        	<tr>
            	<td>
@@ -435,6 +501,7 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
            	</td>
            	<td><input type="text" value="{{ $item->quantity }}"></td>
            	<td>${{ $item->price }} </td>
+           	<td>${{ $item->discount }} </td>
            	<td>${{ $item->subtotal }}</td>
        </tr>
 
@@ -442,4 +509,5 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 
    	</tbody>
 </table>
+
 ```
