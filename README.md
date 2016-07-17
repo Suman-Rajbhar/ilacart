@@ -1,4 +1,10 @@
-## iLaCart The Laravel Shoppingcart
+[![Latest Stable Version](https://poser.pugx.org/lutforrahman/ilacart/v/stable)](https://packagist.org/packages/lutforrahman/ilacart)
+[![Total Downloads](https://poser.pugx.org/lutforrahman/ilacart/downloads)](https://packagist.org/packages/lutforrahman/ilacart)
+[![Latest Unstable Version](https://poser.pugx.org/lutforrahman/ilacart/v/unstable)](https://packagist.org/packages/lutforrahman/ilacart)
+[![License](https://poser.pugx.org/lutforrahman/ilacart/license)](https://packagist.org/packages/lutforrahman/ilacart)
+
+
+# iLaCart The Laravel Shoppingcart
 
 A simple shoppingcart implementation for Laravel >=5.
 
