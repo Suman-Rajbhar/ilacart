@@ -500,3 +500,11 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 </table>
 
 ```
+
+## Follow me
+   
+For further information and help : www.lutforrahman.com
+
+Follow me on twitter : https://twitter.com/social_lutfor
+
+Like my facebook page : https://www.facebook.com/dev.lutfor.rahman
